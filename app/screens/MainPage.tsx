@@ -1,20 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, {  } from 'react';
 import {
-  Alert,
   Animated,
   StyleSheet,
   TouchableOpacity,
-  View,
-  Text,
-  Image,
-  TextInput,
-  FlatList,
 } from 'react-native';
 import { CurvedBottomBarExpo } from 'react-native-curved-bottom-bar';
 import Ionicons from '@expo/vector-icons/Ionicons';
-import { NavigationProp } from '@react-navigation/native';
-import { doc, setDoc, onSnapshot } from 'firebase/firestore'; // Correct import statement for Firestore
-import { FIREBASE_DB, FIREBASE_AUTH } from '../../FirebaseConfig'; // Import FIREBASE_DB and FIREBASE_AUTH from the configFirebase file
+import { FIREBASE_AUTH } from '../../FirebaseConfig'; // Import FIREBASE_DB and FIREBASE_AUTH from the configFirebase file
 import GeminiChat from './chatBot'; // Import the GeminiChat component
 import Task from './Task';
 // Define the Task interface
@@ -25,6 +17,7 @@ interface Task {
 }
 
 const MainPage = () => {
+
   const handleLogout = () => {
     FIREBASE_AUTH.signOut();
   };

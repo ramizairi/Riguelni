@@ -7,6 +7,7 @@ import { addDoc, collection } from "firebase/firestore";
 
 import React, { useState } from 'react';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { MaterialIcons } from '@expo/vector-icons';
 
 
 interface RouterProps {
@@ -126,14 +127,15 @@ const SignUp = ({ navigation }: RouterProps) => {
                     <ActivityIndicator color="white" size='large' />
                 ) : (
                     <TouchableOpacity style={styles.loginButton} onPress={() => { handleSignUp(); }}>
-                        <Text style={styles.buttonText}>Sign Up</Text>
+                    <MaterialIcons name="login" size={24} color="white" />
+                        <Text style={styles.buttonText}>     Sign Up</Text>
                     </TouchableOpacity>
                 )}
             </View>
             <View style={styles.optionsText}>
                 <Text>Already have an account?</Text>
                 <Pressable onPress={() => navigation.navigate('Login')}>
-                    <Text style={styles.signup}>Login Here</Text>
+                    <Text style={styles.signup}>               Login Here</Text>
                 </Pressable>
             </View>
         </SafeAreaView>
@@ -149,7 +151,9 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         alignItems: 'center',
-        width: "100%"
+        width: "100%",
+        justifyContent: 'center', // Center text horizontally
+        flexDirection: 'row',
     },
     container: {
         alignItems: "center",

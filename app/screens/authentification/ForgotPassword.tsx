@@ -3,6 +3,7 @@ import { FIREBASE_AUTH } from '../../../FirebaseConfig';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import React, { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const logo = require("../../../assets/logo.png")
 
@@ -36,22 +37,23 @@ const ForgotPassword = ({ navigation }) => {
             <View style={styles.inputView}>
                 <TextInput value={email} style={styles.input} placeholder='Email...' autoCapitalize='none' onChangeText={(text) => setEmail(text)} />
             </View>
-            
+
             <Text></Text>
             <View style={styles.buttonView}>
                 {loading ? (
                     <ActivityIndicator color="white" size='large' />
                 ) : (
                     <TouchableOpacity style={styles.loginButton} onPress={ChangePassword}>
-                        <Text style={styles.buttonText}>Send link</Text>
+                        <MaterialIcons name="send" size={24} color="white" />
+                        <Text style={styles.buttonText}>       Send link</Text>
                     </TouchableOpacity>
                 )}
             </View>
-            
+
             <View style={styles.optionsText}>
                 <Text>Did you remember your password ?</Text>
                 <Pressable onPress={() => navigation.navigate('Login')}>
-                    <Text style={styles.login}>Login Here</Text>
+                    <Text style={styles.login}>                       Login Here</Text>
                 </Pressable>
             </View>
         </SafeAreaView>
@@ -67,9 +69,11 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         alignItems: 'center',
-        width: "100%"
+        width: "100%",
+        justifyContent: 'center', // Center text horizontally
+        flexDirection: 'row',
     },
-    
+
     login: {
         color: "#1b444f",
         fontSize: 13

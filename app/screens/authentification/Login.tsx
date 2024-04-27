@@ -5,6 +5,7 @@ const logo = require("../../../assets/logo.png")
 import { useState } from 'react';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import React from 'react';
+import { MaterialIcons } from '@expo/vector-icons';
 
 interface RouterProps {
     navigation: NavigationProp<any, any>;
@@ -66,7 +67,8 @@ const Login = ({ navigation }: RouterProps) => {
                     <ActivityIndicator color="white" size='large' />
                 ) : (
                     <TouchableOpacity style={styles.loginButton} onPress={SignIn}>
-                        <Text style={styles.buttonText}>Se connecter</Text>
+                        <MaterialIcons name="login" size={24} color="white" />
+                        <Text style={styles.buttonText}>    Se connecter</Text>
                     </TouchableOpacity>
                 )}
                 <Text></Text>
@@ -90,7 +92,9 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         alignItems: 'center',
-        width: "100%"
+        width: "100%",
+        justifyContent: 'center', // Center text horizontally
+        flexDirection: 'row',
     },
     container: {
         alignItems: "center",

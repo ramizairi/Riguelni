@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, Image } from 'react-native';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, Image, Modal, ActivityIndicator } from 'react-native';
 import { FIREBASE_DB, FIREBASE_AUTH } from '../../FirebaseConfig'; // Import FIREBASE_DB and FIREBASE_AUTH from the configFirebase file
-import { onSnapshot, doc, setDoc, deleteDoc } from "firebase/firestore";
+import { onSnapshot, doc, setDoc, deleteDoc, getDocs, collection, query, getDoc, where } from "firebase/firestore";
 import { NavigationProp } from '@react-navigation/native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
+import { showMessage } from 'react-native-flash-message';
+import * as GoogleGenerativeAI from "@google/generative-ai";
 const logo = require("../../assets/logo.png")
 
 interface Task {
@@ -19,6 +21,10 @@ interface RouterProps {
 const TaskManager = ({ navigation }: RouterProps) => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [taskText, setTaskText] = useState('');
+    const [isModalVisible, setIsModalVisible] = useState(false);
+    const [responseText, setResponseText] = useState('');
+    const API_KEY = "AIzaSyA-RiB6nvzquymNr4YPUXcfMY3LQd2pxJ4";
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -37,11 +43,8 @@ const TaskManager = ({ navigation }: RouterProps) => {
         };
 
         fetchData();
-    }, []);
 
-    const handleLogout = () => {
-        FIREBASE_AUTH.signOut();
-    };
+    }, []);
 
     const handleAddTask = async () => {
         if (taskText.trim() === '') return;
@@ -82,6 +85,58 @@ const TaskManager = ({ navigation }: RouterProps) => {
         }
     };
 
+    const handleGeneratePlan = async () => {
+        try {
+            // Check if the user ID is available
+            if (!FIREBASE_AUTH.currentUser?.uid) {
+                console.error('User ID not available.');
+                return;
+            }
+
+            setLoading(true);
+            const userTasksCollectionRef = collection(FIREBASE_DB, 'usertasks');
+            const userTasksDocRef = doc(userTasksCollectionRef, FIREBASE_AUTH.currentUser?.uid);
+            console.log('User tasks document reference:', userTasksDocRef.path);
+
+            // Fetch tasks from Firestore
+            const userTasksDocSnapshot = await getDoc(userTasksDocRef);
+            const userTasksData = userTasksDocSnapshot.data();
+            const tasks = userTasksData ? userTasksData.tasks : [];
+            console.log('Tasks:', tasks);
+
+
+            // Prepare task text for Gemini Chat API
+            const taskPrompt = tasks.length > 0 ? tasks.map(task => task.text).join('. ') : "No tasks pending.";
+            console.log('Task prompt:', taskPrompt);
+
+            // Greet and generate plan using Gemini Chat API
+            const genAI = new GoogleGenerativeAI.GoogleGenerativeAI(API_KEY);
+            const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+            const prompt = `Hey there, I need your help with organizing my tasks efficiently. Can you help me break down my to-do list into manageable chunks with estimated times for completion? Here's what I need you to do:" ${taskPrompt} " remember, the key here is efficiency! And i want you to give me the answers in format Task : Estimated time : What you should do that Can you handle that? "`;
+            console.log('Prompt:', prompt);
+
+            const result = await model.generateContent(prompt);
+            const response = result.response;
+            const text = response.text();
+            console.log(text);
+            setResponseText(text);
+            showMessage({
+                message: "Gemini Chat Response",
+                description: text,
+                type: "info",
+                icon: "info",
+                duration: 2000,
+            });
+            
+            setLoading(false);
+            setIsModalVisible(true);
+        } catch (error) {
+            console.error('Error generating plan:', error);
+        }
+    };
+    const closeModal = () => {
+        setIsModalVisible(false);
+    };
     const renderItem = ({ item }: { item: Task }) => (
         <View style={styles.taskItem}>
             <TouchableOpacity onPress={() => handleToggleTask(item.id)} key={item.id}>
@@ -90,7 +145,7 @@ const TaskManager = ({ navigation }: RouterProps) => {
                 </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => handleDeleteTask(item.id)}>
-                <Text style={styles.deleteButton}>Delete</Text>
+                <MaterialIcons name="delete" size={24} color="#1b444f" />
             </TouchableOpacity>
         </View>
     );
@@ -115,14 +170,31 @@ const TaskManager = ({ navigation }: RouterProps) => {
                 keyExtractor={item => item.id}
                 contentContainerStyle={styles.taskList}
             />
+            {loading ? (
+                <ActivityIndicator color="white" size='large' />
+            ) : (
+                <>
 
-            <TouchableOpacity style={styles.addButton} onPress={handleLogout}>
-                <MaterialIcons name="generating-tokens" size={24} color="white" />
-                <Text style={styles.addButtonText}>Generate plan</Text>
-            </TouchableOpacity>
+                    <TouchableOpacity style={styles.addButton} onPress={handleGeneratePlan}>
+                        <MaterialIcons name="generating-tokens" size={24} color="white" />
+                        <Text style={styles.addButtonText}>Generate plan</Text>
+                    </TouchableOpacity>
+                </>
+            )}
+
+            <Modal visible={isModalVisible} transparent animationType="fade">
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text style={styles.modalText}>{responseText}</Text>
+                        <TouchableOpacity onPress={closeModal}>
+                            <Text style={styles.closeButton}>Close</Text>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </Modal>
         </View>
-
     );
+
 }
 
 export default TaskManager;
@@ -153,8 +225,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center', // Center text horizontally
         marginBottom: 10,
         width: '100%',
-      },
-      
+    },
+
     addButtonText: {
         color: '#fff',
         fontWeight: 'bold',
@@ -170,7 +242,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
         paddingVertical: 10,
-        width: '75%',
+        width: '74%',
     },
     taskText: {
         fontSize: 16,
@@ -185,5 +257,26 @@ const styles = StyleSheet.create({
     image: {
         height: 200,
         width: 200
+    }, modalContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    },
+    modalContent: {
+        backgroundColor: 'white',
+        padding: 20,
+        borderRadius: 10,
+        alignItems: 'center',
+        marginBottom: 50,
+        marginTop: 50,
+    },
+    modalText: {
+        fontSize: 16,
+        marginBottom: 20,
+    },
+    closeButton: {
+        color: 'blue',
+        fontSize: 16,
     },
 });

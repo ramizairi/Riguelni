@@ -1,8 +1,7 @@
+// App.js
 
 import 'react-native-gesture-handler';
-
 import { onAuthStateChanged } from 'firebase/auth';
-
 import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -13,23 +12,23 @@ import Login from './app/screens/authentification/Login';
 import SignUp from './app/screens/authentification/SignUp';
 import ForgotPassword from './app/screens/authentification/ForgotPassword';
 import AdminInterface from './app/screens/AdminInterface';
-import Footer from './app/screens/Footer';
 import Task from './app/screens/Task';
-
+import MainPage from './app/screens/MainPage';
+import chatBot from './app/screens/chatBot';
 
 enableScreens();
 
 const Stack = createNativeStackNavigator();
 const InsideStack = createNativeStackNavigator();
 
-
 const defaultInsideOptions = { headerShown: true };
 
 function InsideLayout() {
   return (
     <InsideStack.Navigator>
+      <InsideStack.Screen name='MainPage' component={MainPage} options={{ headerShown: false }} />
+      <InsideStack.Screen name='chatBot' component={chatBot} options={{ headerShown: false }} />
       <InsideStack.Screen name='Task' component={Task} options={{ headerShown: false }} />
-      <InsideStack.Screen name='Footer' component={Footer} options={{ headerShown: false }} />
       <InsideStack.Screen name='Admin Panel' component={AdminInterface} options={{ headerShown: false }} />
       <InsideStack.Screen name='ForgotPassword' component={ForgotPassword} options={defaultInsideOptions} />
       <InsideStack.Screen name='Login' component={Login} options={{ headerShown: false }} />
@@ -59,7 +58,7 @@ export default function App() {
   return (
     <SafeAreaProvider>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='Login'>
+        <Stack.Navigator>
           {user ? (
             <Stack.Screen name='Inside' component={InsideLayout} options={{ headerShown: false }} />
           ) : (

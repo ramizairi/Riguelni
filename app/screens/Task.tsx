@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, TouchableOpacity, FlatList, Image } from 'react-native';
-import { FIREBASE_DB } from '../../FirebaseConfig'; // Import FIREBASE_DB from the FirebaseConfig file
-
+import { FIREBASE_DB, FIREBASE_AUTH } from '../../FirebaseConfig'; // Import FIREBASE_DB and FIREBASE_AUTH from the configFirebase file
+import { onSnapshot, doc, setDoc, deleteDoc } from "firebase/firestore";
+import { NavigationProp } from '@react-navigation/native';
+import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 const logo = require("../../assets/logo.png")
 
 interface Task {
@@ -10,26 +12,38 @@ interface Task {
     completed: boolean;
 }
 
-export default function ToDoApp() {
+interface RouterProps {
+    navigation: NavigationProp<any, any>;
+}
+
+const TaskManager = ({ navigation }: RouterProps) => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [taskText, setTaskText] = useState('');
 
     useEffect(() => {
-        const unsubscribe = FIREBASE_DB.collection('usertasks').doc(FIREBASE_AUTH.currentUser?.uid).collection('tasks')
-            .onSnapshot(snapshot => {
-                const data: Task[] = [];
-                snapshot.forEach(doc => {
-                    data.push({ id: doc.id, ...doc.data() } as Task);
+        const fetchData = async () => {
+            try {
+                const unsubscribe = onSnapshot(doc(FIREBASE_DB, `usertasks/${FIREBASE_AUTH.currentUser?.uid}`), (doc) => {
+                    if (doc.exists()) {
+                        const data = doc.data();
+                        setTasks(data ? data.tasks : []);
+                    }
                 });
-                setTasks(data);
-            });
 
-        return () => {
-            unsubscribe();
+                return () => unsubscribe();
+            } catch (error) {
+                console.error('Error fetching tasks:', error);
+            }
         };
+
+        fetchData();
     }, []);
 
-    const handleAddTask = () => {
+    const handleLogout = () => {
+        FIREBASE_AUTH.signOut();
+    };
+
+    const handleAddTask = async () => {
         if (taskText.trim() === '') return;
 
         const newTask: Task = {
@@ -38,29 +52,39 @@ export default function ToDoApp() {
             completed: false,
         };
 
-        FIREBASE_DB.collection('usertasks').doc(FIREBASE_AUTH.currentUser?.uid).collection('tasks').doc(newTask.id).set(newTask);
-
-        setTasks([...tasks, newTask]);
-        setTaskText('');
+        try {
+            await setDoc(doc(FIREBASE_DB, `usertasks/${FIREBASE_AUTH.currentUser?.uid}`), {
+                tasks: [...tasks, newTask]
+            }, { merge: true });
+            setTaskText('');
+        } catch (error) {
+            console.error('Error adding task:', error);
+        }
     };
 
-    const handleToggleTask = (taskId: string) => {
-        setTasks(prevTasks =>
-            prevTasks.map(task =>
+    const handleToggleTask = async (taskId: string) => {
+        try {
+            const updatedTasks = tasks.map(task =>
                 task.id === taskId ? { ...task, completed: !task.completed } : task
-            )
-        );
+            );
+            await setDoc(doc(FIREBASE_DB, `usertasks/${FIREBASE_AUTH.currentUser?.uid}`), { tasks: updatedTasks });
+        } catch (error) {
+            console.error('Error updating task:', error);
+        }
     };
 
-    const handleDeleteTask = (taskId: string) => {
-        setTasks(prevTasks => prevTasks.filter(task => task.id !== taskId));
-
-        FIREBASE_DB.collection('usertasks').doc(FIREBASE_AUTH.currentUser?.uid).collection('tasks').doc(taskId).delete();
+    const handleDeleteTask = async (taskId: string) => {
+        try {
+            const updatedTasks = tasks.filter(task => task.id !== taskId);
+            await setDoc(doc(FIREBASE_DB, `usertasks/${FIREBASE_AUTH.currentUser?.uid}`), { tasks: updatedTasks });
+        } catch (error) {
+            console.error('Error deleting task:', error);
+        }
     };
 
     const renderItem = ({ item }: { item: Task }) => (
         <View style={styles.taskItem}>
-            <TouchableOpacity onPress={() => handleToggleTask(item.id)}>
+            <TouchableOpacity onPress={() => handleToggleTask(item.id)} key={item.id}>
                 <Text style={[styles.taskText, item.completed && styles.completedTaskText]}>
                     {item.text}
                 </Text>
@@ -82,6 +106,7 @@ export default function ToDoApp() {
                 onSubmitEditing={handleAddTask}
             />
             <TouchableOpacity style={styles.addButton} onPress={handleAddTask}>
+                <MaterialIcons name="add" size={24} color="white" />
                 <Text style={styles.addButtonText}>Add Task</Text>
             </TouchableOpacity>
             <FlatList
@@ -90,18 +115,26 @@ export default function ToDoApp() {
                 keyExtractor={item => item.id}
                 contentContainerStyle={styles.taskList}
             />
+
+            <TouchableOpacity style={styles.addButton} onPress={handleLogout}>
+                <MaterialIcons name="generating-tokens" size={24} color="white" />
+                <Text style={styles.addButtonText}>Generate plan</Text>
+            </TouchableOpacity>
         </View>
+
     );
 }
 
+export default TaskManager;
+
 const styles = StyleSheet.create({
     container: {
-        paddingTop: 50,
         flex: 1,
         padding: 20,
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
+        paddingBottom: 100,
     },
     input: {
         borderWidth: 1,
@@ -112,13 +145,16 @@ const styles = StyleSheet.create({
         width: '100%',
     },
     addButton: {
+        flexDirection: 'row',
         backgroundColor: '#1b444f',
         borderRadius: 5,
         padding: 10,
         alignItems: 'center',
+        justifyContent: 'center', // Center text horizontally
         marginBottom: 10,
         width: '100%',
-    },
+      },
+      
     addButtonText: {
         color: '#fff',
         fontWeight: 'bold',
@@ -134,7 +170,7 @@ const styles = StyleSheet.create({
         borderBottomWidth: 1,
         borderBottomColor: '#ccc',
         paddingVertical: 10,
-        width: '100%',
+        width: '75%',
     },
     taskText: {
         fontSize: 16,

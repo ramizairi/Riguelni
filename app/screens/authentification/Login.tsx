@@ -30,7 +30,7 @@ const Login = ({ navigation }: RouterProps) => {
                 Alert.alert('Erreur', 'Veuillez vérifier votre email avant de vous connecter.');
                 return;
             }
-            navigation.navigate('Inside', { screen: 'Task' })
+            navigation.navigate('Inside', { screen: 'MainPage' })
         } catch (error) {
             console.error('Erreur de connexion:', error);
             Alert.alert('Erreur', 'Compte introuvable. Veuillez contactez l\'administrateur.');

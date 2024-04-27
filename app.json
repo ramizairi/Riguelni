@@ -21,10 +21,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.ramizairi.Riguelni"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/adaptive-icon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e4d944a0-ea23-4eb2-bdde-c0e3d6d57dba"
+      }
     }
   }
 }

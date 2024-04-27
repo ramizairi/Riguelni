@@ -1,11 +1,13 @@
+import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, TextInput, ActivityIndicator, KeyboardAvoidingView, Alert, Pressable, SafeAreaView, Switch, Image, Button, TouchableOpacity } from 'react-native';
 import { FIREBASE_AUTH } from '../../../FirebaseConfig';
 import { NavigationProp } from '@react-navigation/native';
-const logo = require("../../../assets/logo.png")
 import { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
-import React from 'react';
+import { signInWithEmailAndPassword, GoogleAuthProvider, Auth } from 'firebase/auth';
 import { MaterialIcons } from '@expo/vector-icons';
+import { GoogleSignin, GoogleSigninButton, statusCodes } from '@react-native-google-signin/google-signin'; // Import GoogleSignin correctly
+
+const logo = require("../../../assets/logo.png");
 
 interface RouterProps {
     navigation: NavigationProp<any, any>;
@@ -16,6 +18,7 @@ const Login = ({ navigation }: RouterProps) => {
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const auth = FIREBASE_AUTH;
+
 
     const SignIn = async () => {
         if (!email || !password) {
@@ -40,11 +43,8 @@ const Login = ({ navigation }: RouterProps) => {
         }
     };
 
-
-
     return (
         <SafeAreaView style={styles.container}>
-
             <Image source={logo} style={styles.image} resizeMode='contain' />
             <Text style={styles.title}>Se connecter...</Text>
             <View style={styles.inputView}>
@@ -52,35 +52,30 @@ const Login = ({ navigation }: RouterProps) => {
                 <TextInput secureTextEntry={true} value={password} style={styles.input} placeholder='Mot de passe' autoCapitalize='none' onChangeText={(text) => setPassword(text)} />
             </View>
             <View style={styles.rememberView}>
-                <View>
-                </View>
+                <View></View>
                 <View>
                     <TouchableOpacity onPress={() => navigation.navigate('ForgotPassword')}>
                         <Text style={styles.forgetText}>Mot de passe oublié?</Text>
                     </TouchableOpacity>
-
                 </View>
             </View>
-
             <View style={styles.buttonView}>
                 {loading ? (
                     <ActivityIndicator color="white" size='large' />
                 ) : (
-                    <TouchableOpacity style={styles.loginButton} onPress={SignIn}>
-                        <MaterialIcons name="login" size={24} color="white" />
-                        <Text style={styles.buttonText}>    Se connecter</Text>
-                    </TouchableOpacity>
+                    <>
+                        <TouchableOpacity style={styles.loginButton} onPress={SignIn}>
+                            <MaterialIcons name="login" size={24} color="white" />
+                            <Text style={styles.buttonText}>    Se connecter</Text>
+                        </TouchableOpacity>
+                    </>
                 )}
                 <Text></Text>
             </View>
-
-
-            <Text style={styles.footerText}>Nouveau ?<Text style={styles.signup} onPress={() => navigation.navigate('SignUp')}>  Créer un compte</Text></Text>
-
-
+            <Text style={styles.footerText}>Nouveau ?
+                <Text style={styles.signup} onPress={() => navigation.navigate('SignUp')}>  Créer un compte</Text></Text>
         </SafeAreaView>
-    )
-
+    );
 };
 
 export default Login;
@@ -192,3 +187,7 @@ const styles = StyleSheet.create({
         fontSize: 13
     }
 })
+
+function signInWithPopup(auth: Auth, provider: GoogleAuthProvider) {
+    throw new Error('Function not implemented.');
+}

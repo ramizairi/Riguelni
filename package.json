@@ -13,6 +13,7 @@
     "@google/generative-ai": "^0.8.0",
     "@react-native-async-storage/async-storage": "^1.23.1",
     "@react-native-firebase/firestore": "^19.2.2",
+    "@react-native-google-signin/google-signin": "^11.0.1",
     "@react-navigation/bottom-tabs": "^6.5.20",
     "@react-navigation/native": "^6.1.17",
     "@react-navigation/native-stack": "^6.9.26",

@@ -75,19 +75,19 @@ expo start
 
 ## Usage
 ### Adding Tasks
-  1️⃣Open the app and navigate to the Tasks section.
-  2️⃣Enter your tasks for the day.
-  3️⃣ress the Generate Plan button.
-  4️⃣The AI will suggest an optimized daily plan based on your input.
+  • Open the app and navigate to the Tasks section.
+  • Enter your tasks for the day.
+  • ress the Generate Plan button.
+  • The AI will suggest an optimized daily plan based on your input.
 ### Chatting with the AI Chatbot
-  1️⃣Navigate to the Chat section.
-  2️⃣Type your question or request in the input field.
-  3️⃣he AI chatbot will respond with helpful information or suggestions.
+  • Navigate to the Chat section.
+  • Type your question or request in the input field.
+  • he AI chatbot will respond with helpful information or suggestions.
 
 # Contributing
 ## We welcome contributions from the community! To contribute to Riguelni, follow these steps:
-  1️⃣Fork the repository.
-  2️⃣Create a new branch (git checkout -b feature-branch).
-  3️⃣Make your changes and commit them (git commit -m 'Add new feature').
-  4️⃣Push to the branch (git push origin feature-branch).
-  5️⃣Create a pull request.
+  • Fork the repository.
+  • Create a new branch (git checkout -b feature-branch).
+  • Make your changes and commit them (git commit -m 'Add new feature').
+  • Push to the branch (git push origin feature-branch).
+  • Create a pull request.

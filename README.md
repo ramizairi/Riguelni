@@ -4,12 +4,12 @@
 
 
 <p align="center">
-  <a href="https://buymeacoffee.com/ramizeyrie" target="_blank">
+  <a href="https://buymeacoffee.com/ramizairi" target="_blank">
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="30px" width= "108px">
   </a>
 </p>
 <p align="center">
-  <img src="https://github.com/ramizairi/Riguelni/assets/121579805/c0861fb8-1275-41d3-863c-f4fa517517b0" alt="buymeacoffee" height="100px" width="100px">
+  <img src="https://github.com/ramizairi/Riguelni/assets/121579805/51ebdce7-86fe-450e-8270-5d536f8123f8" alt="buymeacoffee" height="100px" width="100px">
 </p>
 <p align="center">
 Open source app can help you to manage your daily tasks using AI
@@ -21,7 +21,7 @@ Open source app can help you to manage your daily tasks using AI
 
 |                                                          LOGIN INTERFACE                                                          |                                                        MANAGE TASKS EXEMPLE                                                        |                                                         CHAT WITH AI EXEMPLE                                                         |
 | :------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------: |
-| <img src='https://github.com/ramizairi/Riguelni/assets/121579805/79b34b94-fb3b-4cc5-bee3-60499c7e4297' height='600' width='300' /> | <img src='https://github.com/ramizairi/Riguelni/assets/121579805/47df8894-b4ad-4db4-ba25-047f792b6fdc' height='600' width='300'/> | <img src='https://github.com/ramizairi/Riguelni/assets/121579805/8966e48d-c3cb-4ef8-81b2-0761436dd723' height='600' width='300'/> |
+| <img src='https://github.com/ramizairi/Riguelni/assets/121579805/79b34b94-fb3b-4cc5-bee3-60499c7e4297' height='600' width='300' /> | <img src='https://github.com/ramizairi/Riguelni/assets/121579805/8966e48d-c3cb-4ef8-81b2-0761436dd723' height='600' width='300'/> | <img src='https://github.com/ramizairi/Riguelni/assets/121579805/47df8894-b4ad-4db4-ba25-047f792b6fdc' height='600' width='300'/> |
 
 ## Installation
 

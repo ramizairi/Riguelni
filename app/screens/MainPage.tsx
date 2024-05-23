@@ -1,15 +1,15 @@
-import React, {  } from 'react';
+import React from 'react';
 import {
   Animated,
   StyleSheet,
   TouchableOpacity,
 } from 'react-native';
 import { CurvedBottomBarExpo } from 'react-native-curved-bottom-bar';
-import Ionicons from '@expo/vector-icons/Ionicons';
-import { FIREBASE_AUTH } from '../../FirebaseConfig'; // Import FIREBASE_DB and FIREBASE_AUTH from the configFirebase file
-import GeminiChat from './chatBot'; // Import the GeminiChat component
+import { Ionicons } from '@expo/vector-icons';
+import { FIREBASE_AUTH } from '../../FirebaseConfig'; 
+import GeminiChat from './chatBot';
 import Task from './Task';
-// Define the Task interface
+
 interface Task {
   id: string;
   text: string;
@@ -30,7 +30,7 @@ const MainPage = () => {
         icon = 'alarm-outline';
         break;
       case 'Chat Bot':
-        icon = 'person-outline';
+        icon = 'chatbubble-ellipses-outline';
         break;
     }
 
@@ -42,6 +42,7 @@ const MainPage = () => {
       />
     );
   };
+
 
   const renderTabBar = ({ routeName, selectedTab, navigate }) => {
     return (
@@ -66,13 +67,13 @@ const MainPage = () => {
       borderTopLeftRight
       renderCircle={({ selectedTab, navigate }) => (
         <Animated.View style={styles.btnCircleUp}>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={(handleLogout)}
-        >
-          <Ionicons name={'log-out-outline'} color="gray" size={25} />
-        </TouchableOpacity>
-      </Animated.View>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={(handleLogout)}
+          >
+            <Ionicons name={'log-out-outline'} color="gray" size={25} />
+          </TouchableOpacity>
+        </Animated.View>
       )}
       tabBar={renderTabBar}
     >

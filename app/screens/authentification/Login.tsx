@@ -68,6 +68,7 @@ const Login = ({ navigation }: RouterProps) => {
                             <MaterialIcons name="login" size={24} color="white" />
                             <Text style={styles.buttonText}>    Se connecter</Text>
                         </TouchableOpacity>
+
                     </>
                 )}
                 <Text></Text>
@@ -88,7 +89,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         alignItems: 'center',
         width: "100%",
-        justifyContent: 'center', // Center text horizontally
+        justifyContent: 'center',
         flexDirection: 'row',
     },
     container: {

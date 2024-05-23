@@ -6,7 +6,7 @@ import { NavigationProp } from '@react-navigation/native';
 import { FontAwesome, MaterialIcons } from '@expo/vector-icons';
 import { showMessage } from 'react-native-flash-message';
 import * as GoogleGenerativeAI from "@google/generative-ai";
-const logo = require("../../assets/logo.png")
+const logo = require("../../assets/logo.png");
 
 interface Task {
     id: string;
@@ -127,7 +127,7 @@ const TaskManager = ({ navigation }: RouterProps) => {
                 icon: "info",
                 duration: 2000,
             });
-            
+
             setLoading(false);
             setIsModalVisible(true);
         } catch (error) {
@@ -145,7 +145,7 @@ const TaskManager = ({ navigation }: RouterProps) => {
                 </Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => handleDeleteTask(item.id)}>
-                <MaterialIcons name="delete" size={24} color="#1b444f" />
+                <MaterialIcons name="delete" size={24} color="red" />
             </TouchableOpacity>
         </View>
     );
@@ -173,13 +173,10 @@ const TaskManager = ({ navigation }: RouterProps) => {
             {loading ? (
                 <ActivityIndicator color="white" size='large' />
             ) : (
-                <>
-
-                    <TouchableOpacity style={styles.addButton} onPress={handleGeneratePlan}>
-                        <MaterialIcons name="generating-tokens" size={24} color="white" />
-                        <Text style={styles.addButtonText}>Generate plan</Text>
-                    </TouchableOpacity>
-                </>
+                <TouchableOpacity style={styles.generateButton} onPress={handleGeneratePlan}>
+                    <FontAwesome size={24} color="white" />
+                    <Text style={styles.addButtonText}>Generate plan</Text>
+                </TouchableOpacity>
             )}
 
             <Modal visible={isModalVisible} transparent animationType="fade">
@@ -219,6 +216,16 @@ const styles = StyleSheet.create({
     addButton: {
         flexDirection: 'row',
         backgroundColor: '#1b444f',
+        borderRadius: 5,
+        padding: 10,
+        alignItems: 'center',
+        justifyContent: 'center', // Center text horizontally
+        marginBottom: 10,
+        width: '100%',
+    },
+    generateButton: {
+        flexDirection: 'row',
+        backgroundColor: '#1b444f', // Set background color to gradient from red to blue
         borderRadius: 5,
         padding: 10,
         alignItems: 'center',

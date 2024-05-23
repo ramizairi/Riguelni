@@ -39,9 +39,8 @@ Welcome to **Riguelni** – your personal AI-powered task manager and chatbot! R
 - [Features](#features)
 - [Installation](#installation)
 - [Usage](#usage)
-- [Screenshots](#screenshots)
+- [Preview](#preview)
 - [Contributing](#contributing)
-- [License](#license)
 
 ## Installation
 
@@ -74,20 +73,36 @@ expo start
 ```
 
 ## Usage
+
 ### Adding Tasks
+
   • Open the app and navigate to the Tasks section.
+  
   • Enter your tasks for the day.
+  
   • ress the Generate Plan button.
+  
   • The AI will suggest an optimized daily plan based on your input.
+  
 ### Chatting with the AI Chatbot
+
   • Navigate to the Chat section.
+  
   • Type your question or request in the input field.
+  
   • he AI chatbot will respond with helpful information or suggestions.
 
 # Contributing
+
 ## We welcome contributions from the community! To contribute to Riguelni, follow these steps:
+
   • Fork the repository.
+  
   • Create a new branch (git checkout -b feature-branch).
+  
   • Make your changes and commit them (git commit -m 'Add new feature').
+  
   • Push to the branch (git push origin feature-branch).
+  
   • Create a pull request.
+  

@@ -23,149 +23,71 @@ Open source app can help you to manage your daily tasks using AI
 | :------------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------: |
 | <img src='https://github.com/ramizairi/Riguelni/assets/121579805/79b34b94-fb3b-4cc5-bee3-60499c7e4297' height='600' width='300' /> | <img src='https://github.com/ramizairi/Riguelni/assets/121579805/8966e48d-c3cb-4ef8-81b2-0761436dd723' height='600' width='300'/> | <img src='https://github.com/ramizairi/Riguelni/assets/121579805/47df8894-b4ad-4db4-ba25-047f792b6fdc' height='600' width='300'/> |
 
+# Riguelni
+
+Welcome to **Riguelni** – your personal AI-powered task manager and chatbot! Riguelni is designed to help you manage your daily tasks efficiently and interact with an AI chatbot for any inquiries. Built using React Native and Expo, Riguelni aims to provide a seamless and intuitive user experience.
+
+## Features
+
+- **AI-Powered Task Management**: Add your tasks and let our AI generate an optimized daily plan for you.
+- **AI Chatbot**: Ask the AI chatbot anything, from general knowledge questions to specific inquiries about your tasks.
+- **User-Friendly Interface**: A clean, easy-to-navigate interface built with React Native.
+- **Cross-Platform**: Available on both iOS and Android devices.
+
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Screenshots](#screenshots)
+- [Contributing](#contributing)
+- [License](#license)
+
 ## Installation
 
-Add package to your pubspec:
+Follow these steps to set up Riguelni on your local machine.
 
-```yaml
-dependencies:
-  flutter_overlay_window: any # or the latest version on Pub
+### Prerequisites
+
+- Node.js (>= 14.x)
+- npm or yarn
+- Expo CLI
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/ramizairi/Riguelni.git
+cd Riguelni
+```
+## Install Dependencies
+
+```Using npm
+npm install
 ```
 
-### Android
-
-You'll need to add the `SYSTEM_ALERT_WINDOW` permission and `OverlayService` to your Android Manifest.
-
-```XML
-    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
-
-    <application>
-        ...
-        <service android:name="flutter.overlay.window.flutter_overlay_window.OverlayService" android:exported="false" />
-    </application>
+```Or using yarn
+yarn install
 ```
 
-### Entry point
-
-Inside `main.dart` create an entry point for your Overlay widget;
-
-```dart
-
-// overlay entry point
-@pragma("vm:entry-point")
-void overlayMain() {
-  runApp(const MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: Material(child: Text("My overlay"))
-  ));
-}
-
+```Start the Expo Server
+expo start
 ```
 
-### USAGE
+## Usage
+### Adding Tasks
+  1️⃣Open the app and navigate to the Tasks section.
+  2️⃣Enter your tasks for the day.
+  3️⃣ress the Generate Plan button.
+  4️⃣The AI will suggest an optimized daily plan based on your input.
+### Chatting with the AI Chatbot
+  1️⃣Navigate to the Chat section.
+  2️⃣Type your question or request in the input field.
+  3️⃣he AI chatbot will respond with helpful information or suggestions.
 
-```dart
- /// check if overlay permission is granted
- final bool status = await FlutterOverlayWindow.isPermissionGranted();
-
- /// request overlay permission
- /// it will open the overlay settings page and return `true` once the permission granted.
- final bool status = await FlutterOverlayWindow.requestPermission();
-
-  /// Open overLay content
-  ///
-  /// - Optional arguments:
-  ///
-  /// `height` the overlay height and default is [WindowSize.fullCover]
-  ///
-  /// `width` the overlay width and default is [WindowSize.matchParent]
-  ///
-  /// `alignment` the alignment postion on screen and default is [OverlayAlignment.center]
-  ///
-  /// `visibilitySecret` the detail displayed in notifications on the lock screen and default is [NotificationVisibility.visibilitySecret]
-  ///
-  /// `OverlayFlag` the overlay flag and default is [OverlayFlag.defaultFlag]
-  ///
-  /// `overlayTitle` the notification message and default is "overlay activated"
-  ///
-  /// `overlayContent` the notification message
-  ///
-  /// `enableDrag` to enable/disable dragging the overlay over the screen and default is "false"
-  ///
-  /// `positionGravity` the overlay postion after drag and default is [PositionGravity.none]
-  ///
-  /// `startPosition` the overlay start position and default is null
- await FlutterOverlayWindow.showOverlay();
-
- /// closes overlay if open
- await FlutterOverlayWindow.closeOverlay();
-
- /// broadcast data to and from overlay app
- await FlutterOverlayWindow.shareData("Hello from the other side");
-
- /// streams message shared between overlay and main app
-  FlutterOverlayWindow.overlayListener.listen((event) {
-      log("Current Event: $event");
-    });
-
- /// use [OverlayFlag.focusPointer] when you want to use fields that show keyboards
- await FlutterOverlayWindow.showOverlay(flag: OverlayFlag.focusPointer);
-
-
- /// update the overlay flag while the overlay in action
- await FlutterOverlayWindow.updateFlag(OverlayFlag.defaultFlag);
-
- /// Update the overlay size in the screen
- await FlutterOverlayWindow.resizeOverlay(80, 120);
-
- /// Update the overlay position in the screen
- ///
- /// `position` the new position of the overlay
- ///
- /// `return` true if the position updated successfully
- await FlutterOverlayWindow.moveOverlay(OverlayPosition(0, 156))
-
- /// Get the current overlay position
- ///
- /// `return` the current overlay position
- await FlutterOverlayWindow.getOverlayPosition()
-
-```
-
-```dart
-
-enum OverlayFlag {
-  /// Window flag: this window can never receive touch events.
-  /// Usefull if you want to display click-through overlay
-  clickThrough,
-
-  /// Window flag: this window won't ever get key input focus
-  /// so the user can not send key or other button events to it.
-  defaultFlag,
-
-  /// Window flag: allow any pointer events outside of the window to be sent to the windows behind it.
-  /// Usefull when you want to use fields that show keyboards.
-  focusPointer,
-}
-
-```
-
-```dart
-
-  /// Type of dragging behavior for the overlay.
-  enum PositionGravity {
-    /// The `PositionGravity.none` will allow the overlay to postioned anywhere on the screen.
-    none,
-
-    /// The `PositionGravity.right` will allow the overlay to stick on the right side of the screen.
-    right,
-
-    /// The `PositionGravity.left` will allow the overlay to stick on the left side of the screen.
-    left,
-
-    /// The `PositionGravity.auto` will allow the overlay to stick either on the left or right side of the screen depending on the overlay position.
-    auto,
-  }
-
-
-```
+# Contributing
+## We welcome contributions from the community! To contribute to Riguelni, follow these steps:
+  1️⃣Fork the repository.
+  2️⃣Create a new branch (git checkout -b feature-branch).
+  3️⃣Make your changes and commit them (git commit -m 'Add new feature').
+  4️⃣Push to the branch (git push origin feature-branch).
+  5️⃣Create a pull request.

@@ -1,5 +1,6 @@
 ﻿<p align="center">
   <img src="https://github.com/ramizairi/Riguelni/assets/121579805/57a4c809-c301-4d75-ac7c-c9aac5626a7b" height="170" alt="auto_route_logo">
+  <img src="https://github.com/ramizairi/Riguelni/assets/121579805/0db7fccb-3ce0-4180-a725-31a0a945ef9f" height="170" alt="auto_route_logo">
 </p>
 
 

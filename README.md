@@ -8,8 +8,9 @@
     <img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" height="30px" width= "108px">
   </a>
 </p>
+<p align="center">
   <img src="https://github.com/ramizairi/Riguelni/assets/121579805/c0861fb8-1275-41d3-863c-f4fa517517b0" alt="buymeacoffee" height="100px" width="100px">
-
+</p>
 <p align="center">
 Open source app can help you to manage your daily tasks using AI
 </p>
